@@ -57,7 +57,7 @@ function demo_tensor_dot_equivalents()
 end
 
 #------------------------------------------------------------#
-# Per-slice (batched) matrix multiplication for 3D arrays
+# Batched matrix multiplication for 3D arrays
 function demo_batched_slice_matmul()
     sep("Per-slice (batched) matrix multiplication for 3D arrays")
 
@@ -99,34 +99,80 @@ function demo_broadcasting_and_constructors()
 end
 
 #------------------------------------------------------------#
-# Compare full dot vs per-slice multiplication
-function demo_full_vs_slice_dot()
-    sep("Comparing full-tensor dot vs per-slice matrix multiplication")
+# Dot product using transpose (x' * y) for 1D and 2D arrays
+function demo_transpose_dot()
+    sep("Dot Product using Transpose (x' * y) in Julia")
 
-    # Random 3D tensors
-    B = rand(2,3,4)
-    C = rand(3,2,4)
+    # 1D example
+    x = [1, 2, 3]
+    y = [4, 5, 6]
+    println("1D vectors:")
+    println("x = ", x)
+    println("y = ", y)
+    println("\nCompute:")
+    println("x' * y = ", x' * y)
+    println("dot(x, y) = ", dot(x, y))
+    println("\nExplanation:")
+    println(" • For 1D vectors, x' (transpose) turns the column vector [1;2;3] into a row [1 2 3].")
+    println(" • Then row × column = scalar: 1×4 + 2×5 + 3×6 = 32.")
+    println(" • So x' * y is equivalent to dot(x, y).")
+    println(" • x' * y returns a 1×1 Matrix; dot(x,y) returns a scalar Float64.\n")
 
-    # (A) Full-tensor 'dot' style (sum over all elements)
-    d_full = sum(B .* permutedims(C, (2,1,3))[1:2,1:3,1:4]) # adjust shape just for example
-    println("Full dot-style sum(B .* C) across all dims (approx):")
-    @printf "  → Scalar value: %.6f\n\n" d_full
+    # 2D example
+    A = [1 2; 3 4; 5 6]  # 3×2
+    B = [2 0; 1 3; 4 5]  # 3×2
+    println("2D matrices:")
+    println("A (3×2):"); show(stdout, "text/plain", A); println("\n")
+    println("B (3×2):"); show(stdout, "text/plain", B); println("\n")
 
-    # (B) Per-slice matrix multiplication
-    result_slices = [B[:,:,i] * C[:,:,i] for i in 1:size(B,3)]
-    R = cat(result_slices..., dims=3)
+    println("Now compute A' * B:")
+    println("A' * B =")
+    show(stdout, "text/plain", A' * B); println("\n")
 
-    println("Per-slice results:")
-    println("  R size = ", size(R))
-    println("  Example slice R[:,:,1]:")
-    show(stdout, "text/plain", R[:,:,1]); println("\n")
-
-    println("Conceptual difference:")
-    println(" • Full dot: sums *all* elementwise products into one scalar (like flattening both).")
-    println(" • Per-slice: performs 4 independent (2×3)*(3×2) matrix multiplications → (2×2×4).")
-    println("So: full dot measures *overall similarity*, per-slice gives *structured batch results*.")
+    println("Explanation:")
+    println(" A is 3×2, so A' (transpose) is 2×3.")
+    println(" A' * B multiplies (2×3) × (3×2) → (2×2).")
+    println(" Each entry of A' * B is the dot product between one column of A and one column of B.")
+    println(" This generalizes the vector dot product to matrices — it gives all pairwise dot products between columns of A and B.")
     pause()
 end
+
+#------------------------------------------------------------#
+# Main Menu Loop
+function menu()
+    while true
+        println("\n===== Tensor & Matrix Ops Menu =====")
+        println("1) Element-wise (.*) vs Matrix (*) multiplication (2D)")
+        println("2) 3D tensors: sum(B .* C) vs dot(vec(B), vec(C))")
+        println("3) Per-slice (batched) matrix multiplication (3D)")
+        println("4) Broadcasting & common constructors demo")
+        println("5) Compare full-tensor dot vs per-slice matrix multiplication")
+        println("6) Dot product using transpose (x' * y) (1D & 2D)")
+        println("0) Exit")
+        print("Choose an option: ")
+        choice = tryparse(Int, chomp(readline()))
+        choice === nothing && continue
+
+        if choice == 1
+            demo_elementwise_vs_matrix()
+        elseif choice == 2
+            demo_tensor_dot_equivalents()
+        elseif choice == 3
+            demo_batched_slice_matmul()
+        elseif choice == 4
+            demo_broadcasting_and_constructors()
+        elseif choice == 5
+            demo_full_vs_slice_dot()
+        elseif choice == 6
+            demo_transpose_dot()
+        elseif choice == 0
+            println("Bye!"); break
+        else
+            println("Invalid choice.")
+        end
+    end
+end
+
 
 #------------------------------------------------------------#
 # Main Menu Loop
