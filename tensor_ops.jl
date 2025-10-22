@@ -1,3 +1,7 @@
+#------------------------------------------------------------#
+# Author: Mikka J. Allen
+# Exploring the foundations of tensor mathematics in Julia.
+#------------------------------------------------------------#
 using LinearAlgebra
 using Printf
 
@@ -126,7 +130,7 @@ end
 function demo_transpose_dot()
     sep("Dot Product using Transpose (x' * y) in Julia")
 
-    # --- 1D example
+    # 1D example
     x = [1, 2, 3]
     y = [4, 5, 6]
     println("1D vectors:")
@@ -141,9 +145,9 @@ function demo_transpose_dot()
     println("So x' * y is equivalent to dot(x, y).")
     println("x' * y returns a 1×1 Matrix; dot(x,y) returns a scalar Float64.\n")
 
-    # --- 2D example
-    A = [1 2; 3 4; 5 6]  # 3×2
-    B = [2 0; 1 3; 4 5]  # 3×2
+    # 2D example
+    A = [1 2; 3 4; 5 6]
+    B = [2 0; 1 3; 4 5]
     println("2D matrices:")
     println("A (3×2):"); show(stdout, "text/plain", A); println("\n")
     println("B (3×2):"); show(stdout, "text/plain", B); println("\n")
@@ -170,7 +174,7 @@ function menu()
         println("3) Per-slice (batched) matrix multiplication (3D)")
         println("4) Broadcasting & common constructors demo")
         println("5) Compare full-tensor dot vs per-slice matrix multiplication")
-        println("6) Dot product using transpose (x' * y) — 1D & 2D examples")
+        println("6) Dot product using transpose (x' * y) (1D & 2D)")
         println("0) Exit")
         print("Choose an option: ")
         choice = tryparse(Int, chomp(readline()))
