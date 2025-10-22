@@ -5,7 +5,7 @@ This repository contains an interactive **Julia script (`tensor_ops.jl`)** that 
 - Matrix multiplication (`*`)
 - Tensor dot products (`sum(B .* C)` and `dot(vec(B), vec(C))`)
 - Per-slice (batched) matrix multiplication for 3D tensors
-- Dot product using transpose (x' * y) for 1D and 2D arrays
+- Dot product using transpose `(x' * y)` for 1D and 2D arrays
 
 It’s designed as a learning sandbox for understanding how Julia handles **arrays, tensors, broadcasting, and batched linear algebra** 
 
@@ -16,5 +16,5 @@ It’s designed as a learning sandbox for understanding how Julia handles **arra
 - **Side-by-side comparisons** of element-wise vs matrix vs tensor operations.
 - **Per-slice (batched) multiplication** example similar to PyTorch’s `torch.bmm`.
 - Demonstrations of **broadcasting, comprehensions, and constructors**.
-- Different dot product methods (1D, 2D or 3D Arrays)
+- Different dot product methods `(1D, 2D or 3D Arrays)`.
 ---
