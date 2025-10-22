@@ -1,3 +1,5 @@
+# Author: Mikka J. Allen
+# Exploring tensor mathematics in Julia
 #------------------------------------------------------------#
 # Libraries
 using LinearAlgebra
